@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MOY Message</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f9f9f9; /* Single background color */
+      font-family: 'Baloo 2', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #4a2c2a;
+    }
+
+    .heart {
+      font-size: 3rem;
+      animation: bounce 2s infinite;
+      color: #ff91a4;
+      margin-bottom: 15px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 10px 0 20px;
+      color: #ff6f91;
+      text-align: center;
+    }
+
+    .instructions {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #5b4444;
+      background-color: #fff9fc;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .line {
+      display: none;
+      font-size: 1.6rem;
+      margin: 15px 0;
+      background-color: #fdf1f7;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .line.visible {
+      display: block;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lock-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      z-index: 9999;
+    }
+
+    .lock-screen input {
+      font-size: 1.5rem;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .lock-screen button {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #ff6f91;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lock-screen button:hover {
+      background-color: #ff91a4;
+    }
+
+    .hint {
+      font-size: 1.4rem;
+      color: #ff6f91;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* Shake reminder notification style */
+    .shake-notification {
+      font-size: 1.2rem;
+      background-color: #ffebf2;
+      color: #ff6f91;
+      padding: 15px 25px;
+      margin-top: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="messagePage">
+    <div class="heart">♡</div>
+    <h1>hehehe</h1>
+    <div class="instructions">
+      Give your phone a little shake to reveal something sweet!<br>
+      One shake = one message.<br>
+      Go slow and enjoy each word!
+    </div>
+
+    <div id="line1" class="line">My heart smiles every time I think of you.</div>
+    <div id="line2" class="line">Over and over, you brighten my world in ways I never imagined.</div>
+    <div id="line3" class="line">You mean more to me than words could ever say.</div>           
+
+    <!-- Shake Reminder -->
+    <div id="shakeNotification" class="shake-notification">
+      Shake the phone to reveal more sweet messages!
+    </div>
+  </div>
+
+  <script>
+    let currentLine = 0;
+    const lines = [
+      document.getElementById('line1'),
+      document.getElementById('line2'),
+      document.getElementById('line3'),
+      document.getElementById('lockMessage') // Lock message
+    ];
+    
+    const shakeNotification = document.getElementById('shakeNotification');
+
+    let lastX = null, lastY = null, lastZ = null;
+    let shakeThreshold = 15;
+    let shakeCooldown = false;
+
+    // Show the next line when the phone is shaken
+    function showNextLine() {
+      if (currentLine < lines.length) {
+        lines[currentLine].classList.add('visible');
+        currentLine++;
+      }
+
+      // Show notification when there are more messages to reveal
+      if (currentLine < lines.length) {
+        shakeNotification.style.display = 'block';
+      } else {
+        shakeNotification.style.display = 'none';
+      }
+
+      // After showing the lock message, prompt the password
+      if (currentLine === lines.length) {
+        window.location.href = 'lock.html'; // Redirect to the lock screen page
+      }
+    }
+
+    // Device motion event for shaking detection
+    window.addEventListener("devicemotion", function(event) {
+      const { x, y, z } = event.accelerationIncludingGravity;
+
+      if (lastX !== null && !shakeCooldown) {
+        let deltaX = Math.abs(x - lastX);
+        let deltaY = Math.abs(y - lastY);
+        let deltaZ = Math.abs(z - lastZ);
+
+        if (deltaX + deltaY + deltaZ > shakeThreshold) {
+          showNextLine();
+          shakeCooldown = true;
+          setTimeout(() => {
+            shakeCooldown = false;
+          }, 1500);
+        }
+      }
+
+      lastX = x;
+      lastY = y;
+      lastZ = z;
+    });
+  </script>
+</body>
+</html>

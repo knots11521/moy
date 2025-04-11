@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unlock Message</title>
+  <style>
+    body {
+      font-family: 'Baloo 2', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #ffe9f3;
+      color: #4a2c2a;
+      margin: 0;
+    }
+
+    .lock-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      z-index: 9999;
+    }
+
+    .lock-screen input {
+      font-size: 1.5rem;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+    }
+
+    .lock-screen button {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #ff6f91;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lock-screen button:hover {
+      background-color: #ff91a4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lock-screen">
+    <h2>Please enter the password to unlock the final message!</h2>
+    <input type="" id="password" placeholder="Call Sign ta HAHAHAH" />
+    <button onclick="verifyPassword()">Unlock</button>
+  </div>
+
+  <script>
+    function verifyPassword() {
+      const password = document.getElementById('password').value.trim().toLowerCase();
+      if (password === 'moy') {
+        window.location.href = 'final-message.html'; // Redirect to final message page
+      } else {
+        alert('Incorrect password. Try again!');
+      }
+    }
+  </script>
+
+</body>
+</html>
