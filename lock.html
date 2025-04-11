@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unlock Message</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Baloo 2', cursive;
       display: flex;
@@ -15,6 +20,7 @@
       background-color: #ffe9f3;
       color: #4a2c2a;
       margin: 0;
+      padding: 20px;
     }
 
     .lock-screen {
@@ -31,28 +37,59 @@
       bottom: 0;
       height: 100vh;
       z-index: 9999;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .lock-screen h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
     }
 
     .lock-screen input {
-      font-size: 1.5rem;
-      padding: 10px;
+      font-size: 1.2rem;
+      padding: 0.75rem;
       border-radius: 10px;
       border: none;
-      margin-bottom: 20px;
+      margin-bottom: 1.2rem;
+      width: 100%;
+      max-width: 300px;
     }
 
     .lock-screen button {
-      font-size: 1.2rem;
-      padding: 10px 20px;
-      border-radius: 5px;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
       background-color: #ff6f91;
       color: white;
       border: none;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .lock-screen button:hover {
       background-color: #ff91a4;
+    }
+
+    @media (min-width: 480px) {
+      .lock-screen h2 {
+        font-size: 1.8rem;
+      }
+
+      .lock-screen input {
+        font-size: 1.4rem;
+      }
+
+      .lock-screen button {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .lock-screen h2 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -60,7 +97,7 @@
 
   <div class="lock-screen">
     <h2>Please enter the password to unlock the final message!</h2>
-    <input type="" id="password" placeholder="Call Sign ta HAHAHAH" />
+    <input type="text" id="password" placeholder="Call Sign ta HAHAHAH" />
     <button onclick="verifyPassword()">Unlock</button>
   </div>
 
@@ -68,7 +105,7 @@
     function verifyPassword() {
       const password = document.getElementById('password').value.trim().toLowerCase();
       if (password === 'moy') {
-        window.location.href = 'final-message.html'; // Redirect to final message page
+        window.location.href = 'final-message.html';
       } else {
         alert('Incorrect password. Try again!');
       }
